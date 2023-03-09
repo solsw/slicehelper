@@ -1,2 +1,3 @@
-# slicehelper
-Helpers for Go slice.
+# sliceshelper
+
+Helpers for Go slices.
