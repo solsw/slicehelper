@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// Reverse reverses the elements of 's' in place returning the same modified slice.
+// Reverse reverses the elements of 's' in place returning the same but modified slice.
 func Reverse[S ~[]E, E any](s S) S {
 	if len(s) > 1 {
 		for i := 0; i < len(s)/2; i++ {
@@ -31,7 +31,7 @@ func ReverseNew[S ~[]E, E any](s S) S {
 	return s2
 }
 
-// RemoveInPlace removes in place the element from 's' at the specified index.
+// RemoveInPlace removes in place from 's' the element at the specified index.
 func RemoveInPlace[S ~[]E, E any](s S, idx int) (S, error) {
 	if len(s) == 0 {
 		return nil, errors.New("nil or empty slice")
@@ -45,10 +45,12 @@ func RemoveInPlace[S ~[]E, E any](s S, idx int) (S, error) {
 	return s, nil
 }
 
-// Split splits a sequence of ints [0..'len'-1] (indexes of a slice with length 'len') into 'n' (same as possible) parts.
+// Split splits a sequence of ints [0..'len'-1] (indexes of a slice with length 'len') into 'n' (equal as possible) parts.
+//
 // 'len' and 'n' must be greater than 1. 'len' must not be less than 'n'.
 // The result contains start indexes of the parts and 'len'.
 // So each consecutive pair of result's elements may be used as 'low' and 'high' indices for subslicing.
+//
 // Function is intended for splitting a slice or an array for (parallel) processing of the parts.
 func Split(len, n int) ([]int, error) {
 	if len <= 1 {
