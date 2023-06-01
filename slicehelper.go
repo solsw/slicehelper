@@ -4,6 +4,8 @@ import (
 	"errors"
 	"reflect"
 	"unsafe"
+
+	"github.com/solsw/mathhelper"
 )
 
 // Reverse reverses the elements of 's' in place returning the same but modified slice.
@@ -45,7 +47,8 @@ func RemoveInPlace[S ~[]E, E any](s S, idx int) (S, error) {
 	return s, nil
 }
 
-// Split splits a sequence of ints [0..'len'-1] (indexes of a slice with length 'len') into 'n' (equal as possible) parts.
+// Split splits a sequence of ints [0..'len'-1] (indexes of a slice with length 'len')
+// into 'n' as equal as possible integer parts.
 //
 // 'len' and 'n' must be greater than 1. 'len' must not be less than 'n'.
 // The result contains start indexes of the parts and 'len'.
@@ -62,19 +65,12 @@ func Split(len, n int) ([]int, error) {
 	if len < n {
 		return nil, errors.New("length less than parts number")
 	}
-	var ii []int
-	remainder := len
-	partStart := 0
-	for remainder > 0 {
-		ii = append(ii, partStart)
-		partLen := remainder / n
-		if remainder%n > 0 {
-			partLen++
-		}
-		partStart += partLen
-		remainder -= partLen
-		n--
+	ii := []int{0}
+	last := 0
+	pp, _ := mathhelper.Split(len, n)
+	for _, p := range pp {
+		last += p
+		ii = append(ii, last)
 	}
-	ii = append(ii, len)
 	return ii, nil
 }
