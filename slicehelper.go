@@ -1,24 +1,16 @@
 package slicehelper
 
 import (
+	"cmp"
 	"errors"
 	"reflect"
+	"slices"
 	"unsafe"
 
 	"github.com/solsw/mathhelper"
 )
 
-// Reverse reverses the elements of 's' in place returning the same but modified slice.
-func Reverse[S ~[]E, E any](s S) S {
-	if len(s) > 1 {
-		for i := 0; i < len(s)/2; i++ {
-			s[i], s[len(s)-i-1] = s[len(s)-i-1], s[i]
-		}
-	}
-	return s
-}
-
-// ReverseNew returns the new slice contining the reversed elements of 's'.
+// ReverseNew returns new slice contining the reversed elements of 's'.
 func ReverseNew[S ~[]E, E any](s S) S {
 	if s == nil {
 		return nil
@@ -26,25 +18,17 @@ func ReverseNew[S ~[]E, E any](s S) S {
 	if len(s) == 0 {
 		return S{}
 	}
-	s2 := make(S, 0, len(s))
-	for i := len(s) - 1; i >= 0; i-- {
-		s2 = append(s2, s[i])
-	}
+	s2 := make(S, len(s))
+	copy(s2, s)
+	slices.Reverse[S, E](s2)
 	return s2
 }
 
-// RemoveInPlace removes in place from 's' the element at the specified index.
-func RemoveInPlace[S ~[]E, E any](s S, idx int) (S, error) {
-	if len(s) == 0 {
-		return nil, errors.New("nil or empty slice")
-	}
-	if !(0 <= idx && idx < len(s)) {
-		return nil, errors.New("wrong index")
-	}
-	copy(s[idx:], s[idx+1:])
-	hdr := (*reflect.SliceHeader)(unsafe.Pointer(&s))
-	hdr.Len = len(s) - 1
-	return s, nil
+// SortDesc is like [slices.Sort] but sorts a slice in descending order.
+func SortDesc[S ~[]E, E cmp.Ordered](x S) {
+	slices.SortFunc[S, E](x, func(a, b E) int {
+		return -cmp.Compare[E](a, b)
+	})
 }
 
 // Split splits a sequence of ints [0..'len'-1] (indexes of a slice with length 'len')
@@ -73,4 +57,18 @@ func Split(len, n int) ([]int, error) {
 		ii = append(ii, last)
 	}
 	return ii, nil
+}
+
+// RemoveInPlace removes in place from 's' the element at the specified index.
+func RemoveInPlace[S ~[]E, E any](s S, idx int) (S, error) {
+	if len(s) == 0 {
+		return nil, errors.New("nil or empty slice")
+	}
+	if !(0 <= idx && idx < len(s)) {
+		return nil, errors.New("wrong index")
+	}
+	copy(s[idx:], s[idx+1:])
+	hdr := (*reflect.SliceHeader)(unsafe.Pointer(&s))
+	hdr.Len = len(s) - 1
+	return s, nil
 }
