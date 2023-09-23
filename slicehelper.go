@@ -10,7 +10,8 @@ import (
 	"github.com/solsw/mathhelper"
 )
 
-// ReverseNew returns new slice contining the reversed elements of 's'.
+// ReverseNew returns new slice containing the reversed elements of 's'.
+// The initial slice remains unchanged.
 func ReverseNew[S ~[]E, E any](s S) S {
 	if s == nil {
 		return nil
@@ -61,8 +62,11 @@ func Split(len, n int) ([]int, error) {
 
 // RemoveInPlace removes in place from 's' the element at the specified index.
 func RemoveInPlace[S ~[]E, E any](s S, idx int) (S, error) {
+	if s == nil {
+		return nil, errors.New("nil slice")
+	}
 	if len(s) == 0 {
-		return nil, errors.New("nil or empty slice")
+		return nil, errors.New("empty slice")
 	}
 	if !(0 <= idx && idx < len(s)) {
 		return nil, errors.New("wrong index")
