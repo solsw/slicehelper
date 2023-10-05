@@ -3,7 +3,6 @@ package slicehelper
 import (
 	"cmp"
 	"errors"
-	"reflect"
 	"slices"
 	"unsafe"
 
@@ -72,7 +71,5 @@ func RemoveInPlace[S ~[]E, E any](s S, idx int) (S, error) {
 		return nil, errors.New("wrong index")
 	}
 	copy(s[idx:], s[idx+1:])
-	hdr := (*reflect.SliceHeader)(unsafe.Pointer(&s))
-	hdr.Len = len(s) - 1
-	return s, nil
+	return unsafe.Slice(&s[0], len(s)-1), nil
 }
