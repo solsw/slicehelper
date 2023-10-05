@@ -10,13 +10,16 @@ import (
 )
 
 // ReverseNew returns new slice containing the reversed elements of 's'.
-// The initial slice remains unchanged.
+// The initial slice remains unchanged. If 's' is nil, nil is returned.
 func ReverseNew[S ~[]E, E any](s S) S {
 	if s == nil {
 		return nil
 	}
 	if len(s) == 0 {
 		return S{}
+	}
+	if len(s) == 1 {
+		return S{s[0]}
 	}
 	s2 := make(S, len(s))
 	copy(s2, s)
