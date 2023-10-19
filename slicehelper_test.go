@@ -105,6 +105,78 @@ func TestSortDesc_int(t *testing.T) {
 	}
 }
 
+func TestTrim_string(t *testing.T) {
+	type args struct {
+		s []string
+		f func(string) bool
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{name: "01",
+			args: args{},
+			want: nil,
+		},
+		{name: "02",
+			args: args{
+				s: []string{},
+			},
+			want: []string{},
+		},
+		{name: "03",
+			args: args{
+				s: []string{"q"},
+				f: nil,
+			},
+			want: []string{"q"},
+		},
+		{name: "1",
+			args: args{
+				s: []string{""},
+				f: func(e string) bool { return e == "" },
+			},
+			want: []string{},
+		},
+		{name: "2",
+			args: args{
+				s: []string{"", "", "", ""},
+				f: func(e string) bool { return e == "" },
+			},
+			want: []string{},
+		},
+		{name: "3",
+			args: args{
+				s: []string{"", "1", "", "2", ""},
+				f: func(e string) bool { return e == "" },
+			},
+			want: []string{"1", "", "2"},
+		},
+		{name: "4",
+			args: args{
+				s: []string{"1", "", "2", ""},
+				f: func(e string) bool { return e == "" },
+			},
+			want: []string{"1", "", "2"},
+		},
+		{name: "5",
+			args: args{
+				s: []string{"", "", "1", "", "2"},
+				f: func(e string) bool { return e == "" },
+			},
+			want: []string{"1", "", "2"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Trim(tt.args.s, tt.args.f); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Trim() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestSplit(t *testing.T) {
 	type args struct {
 		len int

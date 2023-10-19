@@ -34,13 +34,43 @@ func SortDesc[S ~[]E, E cmp.Ordered](x S) {
 	})
 }
 
+// TrimStart removes all the leading elements from 's' that satisfy 'f'.
+// If 's' is nil or empty or 'f' is nil, 's' is returned.
+func TrimStart[S ~[]E, E any](s S, f func(E) bool) S {
+	if len(s) == 0 || f == nil {
+		return s
+	}
+	beg := 0
+	for beg < len(s) && f(s[beg]) {
+		beg++
+	}
+	return s[beg:]
+}
+
+// TrimEnd removes all the elements from 's' that satisfy 'f'.
+// If 's' is nil or empty or 'f' is nil, 's' is returned.
+func TrimEnd[S ~[]E, E any](s S, f func(E) bool) S {
+	if len(s) == 0 || f == nil {
+		return s
+	}
+	end := len(s)
+	for end > 0 && f(s[end-1]) {
+		end--
+	}
+	return s[:end]
+}
+
+// Trim removes all leading and trailing elements from 's' that satisfy 'f'.
+// If 's' is nil or empty or 'f' is nil, 's' is returned.
+func Trim[S ~[]E, E any](s S, f func(E) bool) S {
+	return TrimEnd[S, E](TrimStart[S, E](s, f), f)
+}
+
 // Split splits a sequence of ints [0..'len'-1] (indexes of a slice with length 'len')
 // into 'n' as equal as possible integer parts.
-//
 // 'len' and 'n' must be greater than 1. 'len' must not be less than 'n'.
-// The result contains start indexes of the parts and 'len'.
-// So each consecutive pair of result's elements may be used as 'low' and 'high' indices for subslicing.
-//
+// The result contains start indexes of the parts and 'len',
+// so each consecutive pair of result's elements may be used as 'low' and 'high' indices for subslicing.
 // Function is intended for splitting a slice or an array for (parallel) processing of the parts.
 func Split(len, n int) ([]int, error) {
 	if len <= 1 {

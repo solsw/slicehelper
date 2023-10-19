@@ -4,4 +4,4 @@ go 1.21
 
 require github.com/solsw/mathhelper v0.2.0
 
-require golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
+require golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
