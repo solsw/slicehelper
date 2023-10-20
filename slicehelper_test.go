@@ -15,33 +15,23 @@ func TestReverseNew_int(t *testing.T) {
 		want []int
 	}{
 		{name: "nil",
-			args: args{
-				s: nil,
-			},
+			args: args{s: nil},
 			want: nil,
 		},
 		{name: "0",
-			args: args{
-				s: []int{},
-			},
+			args: args{s: []int{}},
 			want: []int{},
 		},
 		{name: "1",
-			args: args{
-				s: []int{1},
-			},
+			args: args{s: []int{1}},
 			want: []int{1},
 		},
 		{name: "12",
-			args: args{
-				s: []int{1, 2},
-			},
+			args: args{s: []int{1, 2}},
 			want: []int{2, 1},
 		},
 		{name: "123",
-			args: args{
-				s: []int{1, 2, 3},
-			},
+			args: args{s: []int{1, 2, 3}},
 			want: []int{3, 2, 1},
 		},
 	}
@@ -71,27 +61,19 @@ func TestSortDesc_int(t *testing.T) {
 		want []int
 	}{
 		{name: "nil",
-			args: args{
-				x: nil,
-			},
+			args: args{x: nil},
 			want: nil,
 		},
 		{name: "0",
-			args: args{
-				x: []int{},
-			},
+			args: args{x: []int{}},
 			want: []int{},
 		},
 		{name: "1",
-			args: args{
-				x: []int{},
-			},
+			args: args{x: []int{}},
 			want: []int{},
 		},
 		{name: "8",
-			args: args{
-				x: []int{1, 2, 3, 4, 5, 6, 7, 8},
-			},
+			args: args{x: []int{1, 2, 3, 4, 5, 6, 7, 8}},
 			want: []int{8, 7, 6, 5, 4, 3, 2, 1},
 		},
 	}

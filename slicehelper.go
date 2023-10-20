@@ -66,12 +66,13 @@ func Trim[S ~[]E, E any](s S, f func(E) bool) S {
 	return TrimEnd[S, E](TrimStart[S, E](s, f), f)
 }
 
-// Split splits a sequence of ints [0..'len'-1] (indexes of a slice with length 'len')
-// into 'n' as equal as possible integer parts.
+// Split splits a sequence of ints [0..'len'-1] (indexes of a slice
+// with length 'len') into 'n' as equal as possible integer parts.
 // 'len' and 'n' must be greater than 1. 'len' must not be less than 'n'.
-// The result contains start indexes of the parts and 'len',
-// so each consecutive pair of result's elements may be used as 'low' and 'high' indices for subslicing.
-// Function is intended for splitting a slice or an array for (parallel) processing of the parts.
+// The result contains start indexes of the parts and 'len', so each consecutive pair
+// of the result's elements may be used as 'low' and 'high' indices for subslicing
+// (see TestSplit for example).
+// Function is intended for splitting a slice for (parallel) processing of the parts.
 func Split(len, n int) ([]int, error) {
 	if len <= 1 {
 		return nil, errors.New("wrong length")
