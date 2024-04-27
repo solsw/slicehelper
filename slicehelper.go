@@ -107,3 +107,15 @@ func RemoveInPlace[S ~[]E, E any](s S, idx int) (S, error) {
 	copy(s[idx:], s[idx+1:])
 	return unsafe.Slice(&s[0], len(s)-1), nil
 }
+
+// Map projects the elements of 's' into a new slice.
+func Map[S ~[]Es, R ~[]Er, Es, Er any](s S, m func(Es) Er) R {
+	if s == nil {
+		return nil
+	}
+	rr := make(R, 0, len(s))
+	for _, es := range s {
+		rr = append(rr, m(es))
+	}
+	return rr
+}

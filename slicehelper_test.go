@@ -331,3 +331,45 @@ func TestRemoveInPlace_int(t *testing.T) {
 		})
 	}
 }
+
+func TestMap_string_int(t *testing.T) {
+	type args struct {
+		s []string
+		m func(string) int
+	}
+	tests := []struct {
+		name string
+		args args
+		want []int
+	}{
+		{name: "nil",
+			args: args{
+				s: nil,
+				m: func(string) int { return 0 },
+			},
+			want: nil,
+		},
+		{name: "empty",
+			args: args{
+				s: []string{},
+				m: func(string) int { return 0 },
+			},
+			want: []int{},
+		},
+		{name: "map",
+			args: args{
+				s: []string{"zero", "one"},
+				m: func(s string) int { return len(s) },
+			},
+			want: []int{4, 3},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := Map[[]string, []int](tt.args.s, tt.args.m)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Map() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
