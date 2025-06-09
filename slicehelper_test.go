@@ -373,3 +373,58 @@ func TestMap_string_int(t *testing.T) {
 		})
 	}
 }
+
+func TestFilter_string(t *testing.T) {
+	type args struct {
+		s []string
+		f func(string) bool
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{name: "nil source",
+			args: args{
+				s: nil,
+				f: func(string) bool { return true },
+			},
+			want: nil,
+		},
+		{name: "nil filter",
+			args: args{
+				s: []string{"one"},
+				f: nil,
+			},
+			want: []string{"one"},
+		},
+		{name: "empty source",
+			args: args{
+				s: []string{},
+				f: func(string) bool { return true },
+			},
+			want: []string{},
+		},
+		{name: "empty result",
+			args: args{
+				s: []string{"one", "two", "three", "four"},
+				f: func(e string) bool { return len(e) == 0 },
+			},
+			want: []string{},
+		},
+		{name: "filter",
+			args: args{
+				s: []string{"one", "two", "three", "four"},
+				f: func(e string) bool { return len(e) < 5 },
+			},
+			want: []string{"one", "two", "four"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Filter(tt.args.s, tt.args.f); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Filter() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

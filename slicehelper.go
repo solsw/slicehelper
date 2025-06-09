@@ -23,14 +23,14 @@ func ReverseNew[S ~[]E, E any](s S) S {
 	}
 	s2 := make(S, len(s))
 	copy(s2, s)
-	slices.Reverse[S, E](s2)
+	slices.Reverse(s2)
 	return s2
 }
 
 // SortDesc is like [slices.Sort] but sorts a slice in descending order.
 func SortDesc[S ~[]E, E cmp.Ordered](x S) {
-	slices.SortFunc[S, E](x, func(a, b E) int {
-		return -cmp.Compare[E](a, b)
+	slices.SortFunc(x, func(a, b E) int {
+		return -cmp.Compare(a, b)
 	})
 }
 
@@ -63,7 +63,7 @@ func TrimEnd[S ~[]E, E any](s S, f func(E) bool) S {
 // Trim removes all leading and trailing elements from 's' that satisfy 'f'.
 // If 's' is nil or empty or 'f' is nil, 's' is returned.
 func Trim[S ~[]E, E any](s S, f func(E) bool) S {
-	return TrimEnd[S, E](TrimStart[S, E](s, f), f)
+	return TrimEnd(TrimStart(s, f), f)
 }
 
 // Split splits a sequence of ints [0..'len'-1] (indexes of a slice
@@ -109,6 +109,7 @@ func RemoveInPlace[S ~[]E, E any](s S, idx int) (S, error) {
 }
 
 // Map projects the elements of 's' into a new slice.
+// If 's' is nil, nil is returned.
 func Map[S ~[]Es, R ~[]Er, Es, Er any](s S, m func(Es) Er) R {
 	if s == nil {
 		return nil
@@ -118,4 +119,23 @@ func Map[S ~[]Es, R ~[]Er, Es, Er any](s S, m func(Es) Er) R {
 		rr = append(rr, m(es))
 	}
 	return rr
+}
+
+// Filter returns a new slice containing only the elements of 's' that satisfy 'f'.
+// If 's' is nil, nil is returned.
+// If 'f' is nil, 's' is returned.
+func Filter[S ~[]E, E any](s S, f func(E) bool) S {
+	if s == nil {
+		return nil
+	}
+	if len(s) == 0 || f == nil {
+		return s
+	}
+	ss := make(S, 0)
+	for _, e := range s {
+		if f(e) {
+			ss = append(ss, e)
+		}
+	}
+	return ss
 }
