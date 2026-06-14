@@ -69,8 +69,12 @@ func TestSortDesc_int(t *testing.T) {
 			want: []int{},
 		},
 		{name: "1",
-			args: args{x: []int{}},
-			want: []int{},
+			args: args{x: []int{42}},
+			want: []int{42},
+		},
+		{name: "shuffled",
+			args: args{x: []int{3, 1, 4, 1, 5, 9, 2, 6}},
+			want: []int{9, 6, 5, 4, 3, 2, 1, 1},
 		},
 		{name: "8",
 			args: args{x: []int{1, 2, 3, 4, 5, 6, 7, 8}},
@@ -332,7 +336,7 @@ func TestRemoveInPlace_int(t *testing.T) {
 	}
 }
 
-func TestMap_string_int(t *testing.T) {
+func TestProject_string_int(t *testing.T) {
 	type args struct {
 		s []string
 		m func(string) int
@@ -346,6 +350,13 @@ func TestMap_string_int(t *testing.T) {
 			args: args{
 				s: nil,
 				m: func(string) int { return 0 },
+			},
+			want: nil,
+		},
+		{name: "nil mapper",
+			args: args{
+				s: []string{"one"},
+				m: nil,
 			},
 			want: nil,
 		},
@@ -366,9 +377,9 @@ func TestMap_string_int(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := Map[[]string, []int](tt.args.s, tt.args.m)
+			got := Project[[]string, []int](tt.args.s, tt.args.m)
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Map() = %v, want %v", got, tt.want)
+				t.Errorf("Project() = %v, want %v", got, tt.want)
 			}
 		})
 	}

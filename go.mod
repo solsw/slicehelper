@@ -1,7 +1,7 @@
 module github.com/solsw/slicehelper
 
-go 1.23.0
+go 1.26
 
-require github.com/solsw/mathhelper v0.2.1
+require github.com/solsw/mathhelper v0.3.0
 
-require golang.org/x/exp v0.0.0-20250606033433-dcc06ee1d476 // indirect
+require golang.org/x/exp v0.0.0-20260611194520-c48552f49976 // indirect

@@ -1,4 +1,4 @@
-github.com/solsw/mathhelper v0.2.1 h1:foSrLrL6v8KLJjV+1iWiIvRUQSx2KepyU2dy2MFczhk=
-github.com/solsw/mathhelper v0.2.1/go.mod h1:y8eI3aZ8T0PXpscowdT8X7jzywTsmm37y8qjK31HucU=
-golang.org/x/exp v0.0.0-20250606033433-dcc06ee1d476 h1:bsqhLWFR6G6xiQcb+JoGqdKdRU6WzPWmK8E0jxTjzo4=
-golang.org/x/exp v0.0.0-20250606033433-dcc06ee1d476/go.mod h1:3//PLf8L/X+8b4vuAfHzxeRUl04Adcb341+IGKfnqS8=
+github.com/solsw/mathhelper v0.3.0 h1:4fxnTkkGj1r6J3o2sKhNY89s2VCX7UZutYlB7fD7hSU=
+github.com/solsw/mathhelper v0.3.0/go.mod h1:W+S7BqLIUZqZ59DrxCi1eErD3UQTcRfOXdVL0uIOO1w=
+golang.org/x/exp v0.0.0-20260611194520-c48552f49976 h1:X8Hz2ImujgbmetVuW+w2YkyZChE3cBpZi2P158rTG9M=
+golang.org/x/exp v0.0.0-20260611194520-c48552f49976/go.mod h1:vnf4pv9iKZXY58sQE1L86zmNWJ4159e1RkcWiLCkeEY=
